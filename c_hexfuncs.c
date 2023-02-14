@@ -45,9 +45,10 @@ void hex_format_offset(unsigned offset, char sbuf[]){
         sbuf[index--] = hex_digit;
         offset/=16;
     }
-    for (int i = 0; i < index; i++) {
+    for (int i = 0; i <= index; i++) {
         sbuf[i] = '0';
     }
+    sbuf[8] = '\0';
 }
 
 // Format a byte value (in the range 0-255) as string consisting
