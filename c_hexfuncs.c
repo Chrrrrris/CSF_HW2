@@ -20,7 +20,12 @@ unsigned hex_read(char data_buf[]){
 
 // Write given nul-terminated string to standard output.
 void hex_write_string(const char s[]){
-    return;
+    unsigned length = 0;
+    // find the length of the string
+    while (s[length] != '\0') {
+        length++;
+    }
+    write(1, s, length);
 }
 
 // Format an unsigned value as an offset string consisting of exactly 8
