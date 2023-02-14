@@ -32,7 +32,10 @@ void hex_write_string(const char s[]){
 // hex digits.  The formatted offset is stored in sbuf, which must
 // have enough room for a string of length 8.
 void hex_format_offset(unsigned offset, char sbuf[]){
-    return;
+    // convert unsigned offset to hex with leading zeros
+    sprintf(sbuf, "%08lx", offset);
+    // Is it necessary?
+    sbuf[8] = '\0';
 }
 
 // Format a byte value (in the range 0-255) as string consisting
