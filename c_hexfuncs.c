@@ -7,14 +7,8 @@
 // Returns the number of characters read.
 unsigned hex_read(char data_buf[]){
     unsigned count = 0;
-    // read 16 bytes, byte by byte.
-    while (count < 16) {
-        if (read(0, data_buf, 1) <= 0) {
-            // return count if the end of the data is reached
-            return count;
-        }
-        count++;
-    }
+    // read 16 bytes
+    count = read(0, data_buf, 16);
     return count;
 }
 
