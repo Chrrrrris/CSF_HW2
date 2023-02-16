@@ -6,7 +6,7 @@ Contributions:
 Assignment 2 MileStone1:
 
 
-    Chris Wang: 
+    Chris Wang: Completed the C functions, main, and hex_to_printable function for assembly.
     
     Emily Song: 
 
