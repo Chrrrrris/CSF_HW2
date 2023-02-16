@@ -5,8 +5,16 @@
 	/* TODO: add read-only data such as strings here */
 
 	.section .text
+		.globl hex_format_offset
+	hex_format_offset:
+	/* TODO: implement */
+		ret
 
-	/* TODO: add functions here */
+		.globl hex_to_printable
+	hex_to_printable:
+	/* TODO: implement */
+		ret
+
 
 /* vim:ft=gas:
  */
