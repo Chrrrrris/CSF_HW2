@@ -59,6 +59,9 @@ void testFormatByteAsHex(TestObjs *objs) {
   char buf[16];
   hex_format_byte_as_hex(objs->test_data_1[0], buf);
   ASSERT(0 == strcmp(buf, "48"));
+  hex_format_byte_as_hex('I', buf);
+  printf("\nsbuf is %s\n", buf);
+  ASSERT(0 == strcmp(buf, "49"));
 }
 
 void testHexToPrintable(TestObjs *objs) {

@@ -48,8 +48,9 @@
 			addb $48, %dl // add 48 to remainder
 		
 		.Lout:
-			movq %rdx, (%rsi, %r10) // set sbuf[index] = remainder
-			decb %r10b // decrement index 
+			leaq (%rsi, %r10), %r8
+			movb %dl, (%r8) // set sbuf[index] = remainder 
+			decq %r10 // decrement index 
 			movb %al, %dil // set quotient from dividion by 16 in al to byteval
 		
 		jmp .Ltop // continue for loop
@@ -59,7 +60,8 @@
 		jmp .LtestCond
 
 	.LloopTop:
-		movq $48, (%rsi, %rcx) // sbuf[counter] = '0'
+		leaq (%rsi, %rcx), %r8
+		movb $48, (%r8) // sbuf[counter] = '0' /*!!!!*/
 		incb %cl // increment counter
 
 	.LtestCond:
@@ -67,6 +69,8 @@
 		jge .LloopTop // jump into loop
 
 	movq $0, 2(%rsi) // sbuf[2] = '\0'
+
+	addq $8, %rsp // stack alignment, move stack pointer
 	ret
 
 		.globl hex_read
