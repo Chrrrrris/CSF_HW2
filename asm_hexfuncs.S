@@ -29,7 +29,7 @@
 		.globl hex_format_byte_as_hex
 	hex_format_byte_as_hex:
 		subq $8, %rsp // stack alignment, move stack pointer
-		movb $1, %r10b // index = 1, from least significant digit
+		movq $1, %r10 // index = 1, from least significant digit
 		movq $16, %r11 // divisor = 16
 	.Ltop:
 		cmpb $0, %dil // compare byteval with 0
