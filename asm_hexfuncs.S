@@ -14,14 +14,14 @@
 	hex_to_printable:
 		subq $8, %rsp // stack alignment, move stack pointer
 		cmpb $31, %dil // compare the char argument with 31
-		jbe .Lpdot // if below 31, the char is not printable
+		jbe .LprintDot // if below 31, the char is not printable
 		cmpb $127, %dil // compare the char argument with 127
-		jge .Lpdot // if it is 127, the char is not printable
+		jge .LprintDot // if it is 127, the char is not printable
 		movb %dil, %al // else, the char is printable, just return the argument
 		addq $8, %rsp // stack alignment
 		ret
 		
-	.Lpdot:
+	.LprintDot:
 		movb $46, %al // set '.' as the return value
 		addq $8, %rsp // stack alignment
 		ret
@@ -31,36 +31,36 @@
 		subq $8, %rsp // stack alignment, move stack pointer
 		movq $1, %r10 // index = 1, from least significant digit
 		movq $16, %r11 // divisor = 16
-	.Ltop:
+	.LwhileLoopTop:
 		cmpb $0, %dil // compare byteval with 0
-		je .Ldone // if = 0, jump to Ldone
+		je .LexitWhile // if = 0, jump to LexitWhile
 		/*Loop body*/
 		movq $0, %rdx // set rdx to 0 for 64 bit diviend
 		movq %rdi, %rax // set rax to diviend byteval
 		divq %r11 // divide byteval by 16, remainder in rdx
 		
 		cmpq $10, %rdx // compare remainder with 10
-		jl .Lelse // if remainder < 10, jump to Lelse
+		jl .LremainderLessThanTen // if remainder < 10, jump to LremainderLessThanTen
 		addq $87, %rdx // add 87 to remainder if remainder >= 10
 		jmp .Lout // jump to rest of code
 	
-	.Lelse:
+	.LremainderLessThanTen:
 		addq $48, %rdx // add 48 to remainder
 	
 	.Lout:
-		leaq (%rsi, %r10), %r8
+		leaq (%rsi, %r10), %r8 // r8 has address of sbuf[index]
 		movb %dl, (%r8) // set sbuf[index] = remainder 
 		decq %r10 // decrement index 
 		movb %al, %dil // set quotient from division by 16 in al to byteval
 		
-		jmp .Ltop // continue for loop
+		jmp .LwhileLoopTop // continue for loop
 
-	.Ldone:
+	.LexitWhile:
 		movq $0, %rcx // rcx is loop counter
 		jmp .LtestCond
 
 	.LloopTop:
-		leaq (%rsi, %rcx), %r8
+		leaq (%rsi, %rcx), %r8 // r8 carries address of sbuf[counter]
 		movb $48, (%r8) // sbuf[counter] = '0'
 		incq %rcx // increment counter
 
