@@ -39,39 +39,39 @@
 		movq %rdi, %rax // set rax to diviend byteval
 		divq %r11 // divide byteval by 16, remainder in rdx
 		
-		cmpb $10, %dl // compare remainder with 10
+		cmpq $10, %rdx // compare remainder with 10
 		jl .Lelse // if remainder < 10, jump to Lelse
-		addb $87, %dl // add 87 to remainder if remainder >= 10
+		addq $87, %rdx // add 87 to remainder if remainder >= 10
 		jmp .Lout // jump to rest of code
-		
-		.Lelse:
-			addb $48, %dl // add 48 to remainder
-		
-		.Lout:
-			leaq (%rsi, %r10), %r8
-			movb %dl, (%r8) // set sbuf[index] = remainder 
-			decq %r10 // decrement index 
-			movb %al, %dil // set quotient from dividion by 16 in al to byteval
+	
+	.Lelse:
+		addq $48, %rdx // add 48 to remainder
+	
+	.Lout:
+		leaq (%rsi, %r10), %r8
+		movb %dl, (%r8) // set sbuf[index] = remainder 
+		decq %r10 // decrement index 
+		movb %al, %dil // set quotient from division by 16 in al to byteval
 		
 		jmp .Ltop // continue for loop
 
 	.Ldone:
-		movb $0, %cl // cl is loop counter
+		movq $0, %rcx // rcx is loop counter
 		jmp .LtestCond
 
 	.LloopTop:
 		leaq (%rsi, %rcx), %r8
-		movb $48, (%r8) // sbuf[counter] = '0' /*!!!!*/
-		incb %cl // increment counter
+		movb $48, (%r8) // sbuf[counter] = '0'
+		incq %rcx // increment counter
 
 	.LtestCond:
-		cmpb %cl, %r10b // compare index with counter
+		cmpq %rcx, %r10 // compare index with counter
 		jge .LloopTop // jump into loop
 
-	movq $0, 2(%rsi) // sbuf[2] = '\0'
+		movb $0, 2(%rsi) // sbuf[2] = '\0'
 
-	addq $8, %rsp // stack alignment, move stack pointer
-	ret
+		addq $8, %rsp // stack alignment, move stack pointer
+		ret
 
 		.globl hex_read
 	hex_read:
