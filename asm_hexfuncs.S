@@ -59,7 +59,7 @@
 		cmpb $31, %dil // compare the char argument with 31
 		jbe .LprintDot // if below 31, the char is not printable
 		cmpb $127, %dil // compare the char argument with 127
-		jge .LprintDot // if it is 127, the char is not printable
+		jae .LprintDot // if it is equal to or greater than 127, the char is not printable
 		movb %dil, %al // else, the char is printable, just return the argument
 		addq $8, %rsp // stack alignment
 		ret

@@ -2,7 +2,7 @@
 
 	.section .rodata
 colonSpace: .string ": "
-oneSpace: .string: " "
+oneSpace: .string " "
 threeSpaces: .string "   "
 newLine: .string "\n"
 
@@ -81,7 +81,7 @@ main:
 	incq %rbp // counter++
 
 .LloopCondWritePrintable:
-	cmpq $16, %rbp // continue the loop until counter == 16
+	cmpq %r12, %rbp // continue the loop until counter == count
 	jl .LloopTopWritePrintable
 
 	movq %r13, %rdi // print data_buf, which now stores printables
