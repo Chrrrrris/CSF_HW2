@@ -123,6 +123,7 @@
 		movq $0, %rdi // move 0 to the first argument of read
 		movq $16, %rdx // move 16 to the third argument of read
 		call read // call read; the values in the memory that is originally represented by %rdi is changed according to the user input
+		movq %rsi, %rdi // move pointer to buffered databuf back to rsi
 		addq $8, %rsp // stack alignment, move stack pointer
 		ret
 
