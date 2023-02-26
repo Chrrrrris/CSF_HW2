@@ -119,9 +119,9 @@
 		.globl hex_read
 	hex_read:
 		subq $8, %rsp // stack alignment, move stack pointer
-		movq $rdi, %rsi // move databuf to the second argument of read
+		movq %rdi, %rsi // move databuf to the second argument of read
 		movq $0, %rdi // move 0 to the first argument of read
-		movq $16, rdx // move 16 to the third argument of read
+		movq $16, %rdx // move 16 to the third argument of read
 		call read // call read; the values in the memory that is originally represented by %rdi is changed according to the user input
 		addq $8, %rsp // stack alignment, move stack pointer
 		ret
@@ -130,13 +130,14 @@
 	hex_write_string:
 		subq $8, %rsp // stack alignment, move stack pointer
 		movq $0, %r10 // r10 is the counter --> counter = 0
+		movb $0, %r11b // store the null terminator to r11b
 		jmp .LloopCond
 	
 	.Lloopbody:
 		incq %r10 // increment counter
 
 	.LloopCond:
-		cmpb (rdi, %r10), $0 // compare '\0' and s[counter]
+		cmpb (%rdi, %r10), %r11b // compare '\0' and s[counter]
 		jne .Lloopbody // continue the loop in s[counter] != '\0'
 
 		movq %rdi, %rsi // move s to the second argument
