@@ -6,7 +6,7 @@ oneSpace: .string " "
 threeSpaces: .string "   "
 newLine: .string "\n"
 
-	.section .bss
+	.section .bss // allocate memory for various buffers
 location: .space (1 * 9) 
 data_buf: .space (1 * 17) 
 sbuf: .space (1 * 3) 
@@ -20,19 +20,19 @@ main:
 	movq $data_buf, %r13 // use %r13 as pointer to element of databuf
 	movq $location, %r15 // use r15 as pointer to element of location
 	movq $sbuf, %rbx // use rbx as pointer to element of sbuf
-	movq %r13, %rdi // move the pointer to the first element in databuf to the first argument of hex_read
+	movq %r13, %rdi // move pointer to first element in databuf to first argument of hex_read
 	call hex_read
-	movq %rax, %r12 // r12 store the count of bytes read
+	movq %rax, %r12 // r12 stores the count of bytes read
 	movb $0, (%r13, %r12) // data_buf[count] = '\0'
 	movq $0, %r14 // index = 0, store index to r14
 	jmp .LloopCond
 
 .LloopTop:
-	// write the location
+	/*write the location*/
 	movq %r14, %rdi // move index to the first argument
 	movq %r15, %rsi // move pointer to location[] to the second argument
 	call hex_format_offset
-	movq %rsi, %rdi // move formatted location[] to the first argument so that it can be output
+	movq %rsi, %rdi // move formatted location[] to first argument to be output
 	call hex_write_string
 	movq $colonSpace, %rdi // write ": "
 	call hex_write_string
@@ -41,7 +41,7 @@ main:
 
 /* write hex digits*/
 .LloopTopWriteHex:
-	movb (%r13, %rbp), %dil //move data_buf[i] to the first argument
+	movb (%r13, %rbp), %dil // move data_buf[i] to the first argument
 	movq %rbx, %rsi // move pointer to sbuf[] to the second argument
 	call hex_format_byte_as_hex // convert character from data_buf to hex digit stored in sbuf
 	movq %rsi, %rdi //write the hex digits to standard output
@@ -75,7 +75,7 @@ main:
 
 /* write printables*/
 .LloopTopWritePrintable:
-	movb (%r13, %rbp), %dil //the first argument = data_buf[i]
+	movb (%r13, %rbp), %dil // the first argument = data_buf[i]
 	call hex_to_printable // convert data_buf[i] to a printable
 	movb %al, (%r13, %rbp) // data_buf[i] = hex_to_printable(data_buf[i])
 	incq %rbp // counter++

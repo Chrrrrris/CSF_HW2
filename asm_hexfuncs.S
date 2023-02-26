@@ -2,8 +2,6 @@
 
 	.section .rodata
 
-	/* TODO: add read-only data such as strings here */
-
 	.section .text
 		.globl hex_format_offset
 	hex_format_offset:
@@ -122,7 +120,7 @@
 		movq %rdi, %rsi // move databuf to the second argument of read
 		movq $0, %rdi // move 0 to the first argument of read
 		movq $16, %rdx // move 16 to the third argument of read
-		call read // call read; the values in the memory that is originally represented by %rdi is changed according to the user input
+		call read // call read, values in memory represented by %rdi is changed to user input
 		movq %rsi, %rdi // move pointer to buffered databuf back to rsi
 		addq $8, %rsp // stack alignment, move stack pointer
 		ret
@@ -134,12 +132,12 @@
 		movb $0, %r11b // store the null terminator to r11b
 		jmp .LloopCond
 	
-	.Lloopbody:
+	.LloopBody:
 		incq %r10 // increment counter
 
 	.LloopCond:
 		cmpb (%rdi, %r10), %r11b // compare '\0' and s[counter]
-		jne .Lloopbody // continue the loop in s[counter] != '\0'
+		jne .LloopBody // continue the loop in s[counter] != '\0'
 
 		movq %rdi, %rsi // move s to the second argument
 		movq $1, %rdi // move 1 to the first argument

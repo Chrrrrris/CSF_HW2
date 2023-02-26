@@ -13,6 +13,6 @@ Assignment 2 MileStone1:
 Assignment 2 MileStone2:
 
 
-    Chris Wang: 
+    Chris Wang: Implementation of ASM functions
     
-    Emily Song: 
+    Emily Song: Unit tests, input tests, formatting
